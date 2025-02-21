@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        textarea {
+            width: 80%;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+        select, button {
+            padding: 10px;
+            margin: 5px;
+        }
+        #output {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Language Translator</h2>
+    <textarea id="inputText" placeholder="Enter text to translate..."></textarea><br>
+    <button onclick="startRecording()">🎤 Record</button>
+    <select id="language">
+        <option value="en">English</option>
+        <option value="de">German</option>
+        <option value="ne">Nepali</option>
+        <option value="th">Tharu</option>
+        <option value="cd">Chaudary</option>
+        <option value="tm">Tamang</option>
+    </select>
+    <button onclick="translateText()">Translate</button>
+    <div id="output"></div>
+    <button onclick="speakText()">🔊 Speak</button>
+
+    <script>
+        function translateText() {
+            const inputText = document.getElementById("inputText").value;
+            const targetLanguage = document.getElementById("language").value;
+            const apiKey = "YOUR_GOOGLE_TRANSLATE_API_KEY"; // Replace with your API key
+            const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    q: inputText,
+                    target: targetLanguage
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("output").innerText = data.data.translations[0].translatedText;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function speakText() {
+            const text = document.getElementById("output").innerText;
+            const speech = new SpeechSynthesisUtterance(text);
+            speech.lang = document.getElementById("language").value;
+            window.speechSynthesis.speak(speech);
+        }
+
+        function startRecording() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'ne'; // Supports Nepali, Tharu, Chaudary, and Tamang
+            recognition.start();
+            recognition.onresult = function(event) {
+                document.getElementById("inputText").value = event.results[0][0].transcript;
+            };
+        }
+    </script>
+</body>
+</html>
+

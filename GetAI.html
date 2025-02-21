@@ -7,9 +7,20 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 50px;
             background-color: #f4f4f4;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .budget-planner, .currency-converter {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 48%;
         }
         input, button {
             margin: 10px;
@@ -28,7 +39,6 @@
         .result {
             margin-top: 20px;
             font-weight: bold;
-            background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -54,78 +64,108 @@
     </style>
 </head>
 <body>
-    <h2>Budget Planner</h2>
-    <label>Budget ($):</label>
-    <input type="number" id="budget" placeholder="Enter budget">
-    <br>
-    <label>Number of People:</label>
-    <input type="number" id="people" placeholder="Enter number of people">
-    <br>
-    <button onclick="calculatePlan()">Calculate</button>
-    <div class="result" id="output"></div>
-    <div class="places" id="placesOutput"></div>
 
-    <script>
-        function calculatePlan() {
-            let budget = parseFloat(document.getElementById("budget").value);
-            let people = parseInt(document.getElementById("people").value);
-            
-            if (isNaN(budget) || isNaN(people) || people <= 0 || budget <= 0) {
-                document.getElementById("output").innerHTML = "Please enter valid budget and number of people.";
-                return;
-            }
-            
-            let costPerDay = 50;
-            let totalDays = Math.floor(budget / (costPerDay * people));
-            
-            let places = [];
-            if (budget >= 500) {
-                places = ["Nuwakot", "Solu", "Terathum"];
-            } else if (budget >= 300) {
-                places = ["Pokhara", "Kathmandu"];
-            } else if (budget >= 250) {
-                places = ["Chitwan", "Lumbini"];
-            } else {
-                places = ["Nagarkot", "Chandragiri", "Boudhanath"];
-            }
-            
-            if (people > 1 && people <= 5) {
-                places = places.slice(0, 2);
-            } else if (people > 5) {
-                places = ["Swayambhu", "Chandragiri", "Boudhanath"];
-            }
-            
-            let foodOptions = totalDays > 0 ? "Standard Meals" : "Not enough budget";
-            let hotel = totalDays > 0 ? "Budget Hotel" : "None";
-            let roomClass = totalDays > 0 ? (budget / people > 200 ? "Class A" : budget / people > 100 ? "Class B" : "Class C") : "N/A";
-            
-            document.getElementById("output").innerHTML = `
-                You can stay for <b>${totalDays}</b> days.<br>
-                Food: <b>${foodOptions}</b><br>
-                Hotel: <b>${hotel}</b><br>
-                Room Class: <b>${roomClass}</b>
-            `;
-            
-            let placesOutput = document.getElementById("placesOutput");
-            placesOutput.innerHTML = "";
-            places.forEach(place => {
-                let description = "";
-                if (place === "Solu") description = "You can visit Khumba Pokhari and explore mountain camps.";
-                if (place === "Chitwan") description = "You can visit the National Park and enjoy an elephant ride.";
-                if (place === "Kathmandu") description = "You can visit Pashupatinath Temple and Swayambhu.";
-                if (place === "Pokhara") description = "You can explore Phewa Lake and Davis Falls Rupa lake.";
-                if (place === "Lumbini") description = "You can visit the birthplace of Lord Buddha  Maya Devi temple.";
-                if (place=== "Nuwakot") description = "you can see the mountain view and sunrise in the morning and climate is enjoyable";
-                let placeCard = document.createElement("div");
-                placeCard.classList.add("place-card");
-                placeCard.innerHTML = `
-                    <img src="images/${place}.jpg" alt="${place}">
-                    <p><b>${place}</b></p>
-                    <p>${description}</p>
-                `;
-                placesOutput.appendChild(placeCard);
-            });
+<div class="container">
+    <!-- Budget Planner -->
+    <div class="budget-planner">
+        <h2>Budget Planner</h2>
+        <label>Budget ($):</label>
+        <input type="number" id="budget" placeholder="Enter budget">
+        <br>
+        <label>Number of People:</label>
+        <input type="number" id="people" placeholder="Enter number of people">
+        <br>
+        <button onclick="calculatePlan()">Calculate</button>
+        <div class="result" id="output"></div>
+        <div class="places" id="placesOutput"></div>
+    </div>
+
+    <!-- Currency Converter -->
+    <div class="currency-converter">
+        <h2>Nepali Rupees to USD & Euro Converter</h2>
+        <input type="number" id="npr" placeholder="Enter amount in NPR">
+        <button onclick="convertCurrency()">Convert</button>
+        <div class="result" id="result"></div>
+    </div>
+</div>
+
+<script>
+    function calculatePlan() {
+        let budget = parseFloat(document.getElementById("budget").value);
+        let people = parseInt(document.getElementById("people").value);
+        
+        if (isNaN(budget) || isNaN(people) || people <= 0 || budget <= 0) {
+            document.getElementById("output").innerHTML = "Please enter a valid budget and number of people.";
+            return;
         }
-    </script>
+        
+        let costPerDay = 50;
+        let totalDays = Math.floor(budget / (costPerDay * people));
+        
+        let places = [];
+        if (budget >= 500) {
+            places = ["Nuwakot", "Solu", "Terathum"];
+        } else if (budget >= 300) {
+            places = ["Pokhara", "Kathmandu"];
+        } else if (budget >= 250) {
+            places = ["Chitwan", "Lumbini"];
+        } else {
+            places = ["Nagarkot", "Chandragiri", "Boudhanath"];
+        }
+        
+        if (people > 1 && people <= 5) {
+            places = places.slice(0, 2);
+        } else if (people > 5) {
+            places = ["Swayambhu", "Chandragiri", "Boudhanath"];
+        }
+        
+        let foodOptions = totalDays > 0 ? "Standard Meals" : "Not enough budget";
+        let hotel = totalDays > 0 ? "Budget Hotel" : "None";
+        let roomClass = totalDays > 0 ? (budget / people > 200 ? "Class A" : budget / people > 100 ? "Class B" : "Class C") : "N/A";
+        
+        document.getElementById("output").innerHTML = `
+            You can stay for <b>${totalDays}</b> days.<br>
+            Food: <b>${foodOptions}</b><br>
+            Hotel: <b>${hotel}</b><br>
+            Room Class: <b>${roomClass}</b>
+        `;
+        
+        let placesOutput = document.getElementById("placesOutput");
+        placesOutput.innerHTML = "";
+        places.forEach(place => {
+            let description = "";
+            if (place === "Solu") description = "You can visit Khumba Pokhari and explore mountain camps.";
+            if (place === "Chitwan") description = "You can visit the National Park and enjoy an elephant ride.";
+            if (place === "Kathmandu") description = "You can visit Pashupatinath Temple and Swayambhu.";
+            if (place === "Pokhara") description = "You can explore Phewa Lake and Davis Falls Rupa lake.";
+            if (place === "Lumbini") description = "You can visit the birthplace of Lord Buddha Maya Devi temple.";
+            if (place=== "Nuwakot") description = "You can see the mountain view and sunrise in the morning and enjoy the climate.";
+
+            let placeCard = document.createElement("div");
+            placeCard.classList.add("place-card");
+            placeCard.innerHTML = `
+                <img src="images/${place}.jpg" alt="${place}">
+                <p><b>${place}</b></p>
+                <p>${description}</p>
+            `;
+            placesOutput.appendChild(placeCard);
+        });
+    }
+
+    function convertCurrency() {
+        let npr = document.getElementById('npr').value;
+        let usdRate = 1 / 138.2;
+        let euroRate = 1 / 145.20;
+
+        let usd = (npr * usdRate).toFixed(2);
+        let euro = (npr * euroRate).toFixed(2);
+
+        document.getElementById('result').innerHTML = `
+            ${npr} NPR = ${usd} USD <br>
+            ${npr} NPR = ${euro} EUR
+        `;
+    }
+</script>
+
 </body>
 </html>

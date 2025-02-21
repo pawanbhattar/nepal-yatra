@@ -12,6 +12,36 @@ body {
             background-position: center;
 }
 
+nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav input {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+nav button {
+    padding: 8px 12px;
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+nav button:hover {
+    background-color: #e68900;
+}
+
 /* Top Bar */
 .top-bar {
     display: flex;

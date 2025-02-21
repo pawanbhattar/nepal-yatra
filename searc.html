@@ -1,0 +1,52 @@
+<script>
+    function searchPlaces() {
+        let budget = parseFloat(document.getElementById("budget").value);
+        let placesOutput = document.getElementById("placesOutput");
+
+        // Clear previous results
+        placesOutput.innerHTML = "";
+
+        if (isNaN(budget) || budget <= 0) {
+            placesOutput.innerHTML = "<p>Please enter a valid budget.</p>";
+            return;
+        }
+
+        let places = [];
+
+        if (budget >= 500) {
+            places = [
+                { name: "Nuwakot", image: "images/nuwakot.jpg", description: "Mountain view, sunrise, and great climate." },
+                { name: "Solu", image: "images/solu.jpg", description: "Visit Khumbu Pokhari and mountain camps." },
+                { name: "Terathum", image: "images/terathum.jpg", description: "Explore the beautiful hills of Terathum." }
+            ];
+        } else if (budget >= 300) {
+            places = [
+                { name: "Pokhara", image: "images/pokhara.jpg", description: "Explore Phewa Lake and Davis Falls." },
+                { name: "Kathmandu", image: "images/kathmandu.jpg", description: "Visit Pashupatinath and Swayambhu." }
+            ];
+        } else if (budget >= 250) {
+            places = [
+                { name: "Chitwan", image: "images/chitwan.jpg", description: "National Park and elephant safari." },
+                { name: "Lumbini", image: "images/lumbini.jpg", description: "Birthplace of Buddha, Maya Devi Temple." }
+            ];
+        } else {
+            places = [
+                { name: "Nagarkot", image: "images/nagarkot.jpg", description: "Sunrise and Himalayan views." },
+                { name: "Chandragiri", image: "images/chandragiri.jpg", description: "Cable car ride and amazing views." },
+                { name: "Boudhanath", image: "images/boudhanath.jpg", description: "Visit the historic Boudhanath Stupa." }
+            ];
+        }
+
+        // Display results
+        places.forEach(place => {
+            let placeCard = document.createElement("div");
+            placeCard.classList.add("place-card");
+            placeCard.innerHTML = `
+                <img src="${place.image}" alt="${place.name}">
+                <h3>${place.name}</h3>
+                <p>${place.description}</p>
+            `;
+            placesOutput.appendChild(placeCard);
+        });
+    }
+</script>
