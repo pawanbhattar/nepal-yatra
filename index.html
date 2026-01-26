@@ -1,98 +1,153 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <!-- Basic SEO -->
-    <title>Nepal Yatra App | Best Travel & Tourism App in Nepal</title>
-    <meta name="google-site-verification" content="Dhx6YpQ-KirKA0SerbzIdw1dBGtOB2C06TjDgOiaeMo">
-
-    
-    <meta name="description" content="Nepal Yatra is the best travel & tourism app in Nepal to explore places, plan trips, calculate budget and travel smart.">
-    <meta name="keywords" content="Nepal Yatra App, Nepal travel app, travel app in Nepal, Nepal tourism app">
-    <meta name="author" content="Nepal Yatra">
-
-    <!-- Technical -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
-
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
+<meta charset="UTF-8">
+<title>Nepal Smart Trip Planner</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    
+<header>
+  <h1>Nepal Smart Budget Planner 🇳🇵</h1>
+</header>
+
+<div class="container">
+
+<!-- PROMPT -->
+<div class="prompt-box">
+  <input type="text" id="prompt" placeholder="Example: I have 3000 and want dating trip">
+  <button onclick="generateTrip()">Search</button>
 </div>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nepal Yatra</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-</head>
-<body>
-    <header>
-        <div class="top-bar">
-            <div class="left">
-                <i class="fas fa-map-marker-alt"></i>Kathmandu Nepal 
-            </div>
-            <div class="right">
-                <i class="fas fa-envelope"></i> nepalyatra@gmail.com
-                <i class="fas fa-phone"></i> +977-9744326504
-            </div>
-        </div>
 
-        <nav class="navbar">
-            <div class="logo">
-                <div class="header">
-    <div class="logo-container">
-        <h1>Nepal Yatra</h1>
-        <img src="Nplogo.jpeg" class="header-logo">
+<button id="backBtn" class="back hidden" onclick="goBack()">⬅ Back</button>
+
+<!-- RESULT -->
+<div id="result"></div>
+
+<!-- CULTURAL POSTS -->
+<h2 id="culturalTitle">Cultural Events</h2>
+<div id="culturalPosts" class="cultural-grid">
+  
+  <div class="card">
+    <img src="https://source.unsplash.com/400x250/?nepal,festival">
+    <h3>Newari Jatra Experience</h3>
+    <p>Experience culture, food & rituals</p>
+    <button onclick="openCulturalDetail()">View Details</button>
+  </div>
+
+</div>
+
+<!-- CULTURE DETAIL -->
+<div id="culturalDetail" class="hidden"></div>
+
+</div>
+
+
+<script>
+// ================= DATA =================
+const trips = {
+  dating: [
+    { name: "Pokhara Lakeside", image: "https://source.unsplash.com/600x350/?pokhara,lake", map: "Pokhara" },
+    { name: "Nagarkot Sunset", image: "https://source.unsplash.com/600x350/?nagarkot,sunset", map: "Nagarkot" }
+  ],
+  rural: [
+    { name: "Ghale Gaun Village", image: "https://source.unsplash.com/600x350/?nepal,village", map: "Ghale Gaun" }
+  ],
+  mountain: [
+    { name: "Ghandruk View Point", image: "https://source.unsplash.com/600x350/?ghandruk", map: "Ghandruk" }
+  ],
+  cultural: [
+    { name: "Bhaktapur Durbar", image: "https://source.unsplash.com/600x350/?bhaktapur", map: "Bhaktapur" }
+  ]
+};
+
+let index = 0;
+let activeList = [];
+
+// ================= MAIN FUNCTION =================
+function generateTrip() {
+  const text = document.getElementById("prompt").value.toLowerCase();
+  if(text.trim()==="") return alert("Please enter your plan 😊");
+
+  let type = "dating";
+  if(text.includes("rural")||text.includes("village")) type="rural";
+  if(text.includes("mountain")||text.includes("himal")) type="mountain";
+  if(text.includes("culture")||text.includes("jatra")) type="cultural";
+
+  activeList = trips[type];
+  index = 0;
+
+  showTrip();
+}
+
+// ================= SHOW TRIP =================
+function showTrip() {
+  const trip = activeList[index];
+
+  document.getElementById("result").innerHTML = `
+    <div class="card">
+      <h2>${trip.name}</h2>
+      <img src="${trip.image}">
+      <iframe src="https://maps.google.com/maps?q=${trip.map}&t=&z=11&output=embed"></iframe>
+
+      <div class="buttons">
+        <button class="book" onclick="alert('Booked Successfully!')">Book Now</button>
+        <button class="next" onclick="nextTrip()">Next Option ➜</button>
+      </div>
     </div>
-    
-</div>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#" class="active">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#"> Contact us </a></li>
-              <a href="GetAI.html">Get AI</a>
-              <li><a href="events.html"> Events</a></li>
+  `;
 
+  hideHome();
+  document.getElementById("result").classList.remove("hidden");
+  document.getElementById("backBtn").classList.remove("hidden");
+}
 
+// ================= NEXT =================
+function nextTrip(){
+  index++;
+  if(index>=activeList.length) index=0;
+  showTrip();
+}
 
-            </ul>
-            <a href="#" class="btn">Book Now</a>
-        </nav>
-    </header>
+// ================= CULTURAL DETAIL =================
+function openCulturalDetail(){
+  hideHome();
+  
+  document.getElementById("culturalDetail").innerHTML = `
+    <div class="card">
+      <h2>Newar Jatra Cultural Event</h2>
+      <img src="https://source.unsplash.com/600x350/?newar,festival">
+      <p><b>Caste:</b> Newar</p>
+      <p><b>Budget:</b> NPR 1000</p>
+      <p><b>People:</b> 2</p>
+      <p><i>"We show Jatra, culture & food for NPR 1000 for 2 persons."</i></p>
 
-    <section class="hero">
-        <div class="overlay">
-            <h1>If you have a dream to visit Nepal </h1>
-            <p>Than share with us we are here to make your dream true .</p>
-            <a href="#" class="btn">Read More</a>
-        </div>
-    </section>
+      <iframe src="https://maps.google.com/maps?q=Bhaktapur&t=&z=12&output=embed"></iframe>
 
-    <section class="features">
-        <div class="feature">
-            <i class="fas fa-user-friends"></i>
-            <p>Guests</p>
-        </div>
-        <div class="feature">
-            <i class="fas fa-wifi"></i>
-            <p>Top places </p>
-        </div>
-        <div class="feature">
-            <i class="fas fa-map-marker-alt"></i>
-            <p>Location</p>
-        </div>
-        
-        </div>
-        
-    </section>
+      <button class="book" onclick="alert('Cultural Event Booked!')">Book Cultural Event</button>
+    </div>
+  `;
+
+  document.getElementById("culturalDetail").classList.remove("hidden");
+  document.getElementById("backBtn").classList.remove("hidden");
+}
+
+// ================= COMMON =================
+function hideHome(){
+  document.getElementById("culturalPosts").classList.add("hidden");
+  document.getElementById("culturalTitle").classList.add("hidden");
+}
+
+function goBack(){
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("culturalDetail").classList.add("hidden");
+  document.getElementById("backBtn").classList.add("hidden");
+
+  document.getElementById("culturalPosts").classList.remove("hidden");
+  document.getElementById("culturalTitle").classList.remove("hidden");
+}
+</script>
+
 </body>
 </html>
