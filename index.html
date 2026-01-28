@@ -1,151 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Nepal Smart Trip Planner</title>
-<link rel="stylesheet" href="style.css">
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nepal Yatra - Mobile Planner</title>
+    <style>
+        :root { 
+            --nepal-red: #DC143C; 
+            --nepal-blue: #003893; 
+            --light-bg: #f2f5f8; 
+            --white: #ffffff;
+        }
 
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background: var(--light-bg); 
+            margin: 0; 
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Header & Logo */
+        header { 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1540962351504-03099e0a75c3?q=80&w=1000'); 
+            background-size: cover; 
+            background-position: center;
+            width: 100%;
+            padding: 40px 20px; 
+            text-align: center;
+            color: white;
+        }
+
+        .logo { 
+            width: 70px; 
+            height: auto; 
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+
+        .container { 
+            width: 92%; 
+            max-width: 450px; 
+            margin-top: -30px; 
+        }
+
+        /* Responsive Search Bar */
+        .search-area { 
+            background: var(--white); 
+            padding: 15px; 
+            border-radius: 15px; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input { 
+            padding: 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            width: 100%;
+        }
+
+        .btn-go { 
+            background: var(--nepal-red); 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Result & Home Cards */
+        .card { 
+            background: var(--white); 
+            border-radius: 18px; 
+            overflow: hidden; 
+            margin-top: 20px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-content { padding: 20px; }
+
+        .price-box { 
+            background: #f8f9fa; 
+            padding: 15px; 
+            border-radius: 12px; 
+            margin: 15px 0;
+            border-left: 5px solid var(--nepal-blue);
+            font-size: 0.95em;
+        }
+
+        .hidden { display: none; }
+        .back-link { 
+            display: block; 
+            text-align: center; 
+            margin-top: 20px; 
+            color: #666; 
+            text-decoration: none; 
+            font-weight: bold;
+        }
+
+        h2, h3 { margin: 0 0 10px 0; }
+        p { color: #555; font-size: 0.95em; }
+    </style>
+</head>
 <body>
 
 <header>
-  <h1>Nepal Smart Budget Planner 🇳🇵</h1>
+    <img src="logos.png" alt="Yatra Logo" class="logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/824/824131.png'">
+    <h2 style="margin: 0;">Nepal Yatra</h2>
+    <p style="margin: 5px 0 0 0; opacity: 0.8;">Budget-Smart Trip Planner</p>
 </header>
 
 <div class="container">
+    <div class="search-area">
+        <input type="text" id="userInput" placeholder="I have 4000 for Himalayan...">
+        <button class="btn-go" onclick="runPlanner()">Create My Plan</button>
+    </div>
 
-<!-- PROMPT -->
-<div class="prompt-box">
-  <input type="text" id="prompt" placeholder="Example: I have 3000 and want dating trip">
-  <button onclick="generateTrip()">Search</button>
+    <div id="results" class="hidden"></div>
+    <a href="#" id="backBtn" class="back-link hidden" onclick="resetHome()">⬅ Back to Home</a>
+
+    <div id="home-feed">
+        <h4 style="margin: 25px 0 10px 5px; color: #444;">Upcoming Cultural Highlights</h4>
+        
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1625995574041-949755f10255?q=80&w=600" alt="Jatra">
+            <div class="card-content">
+                <h3 style="color: var(--nepal-red);">Indra Jatra Festival</h3>
+                <p>The biggest street festival in Kathmandu featuring the Chariot of Kumari.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1582650843472-a7082662f55c?q=80&w=600" alt="Stupa">
+            <div class="card-content">
+                <h3 style="color: var(--nepal-blue);">Boudhanath Evening Kora</h3>
+                <p>Join the local community for spiritual prayers and lamp lighting at the Stupa.</p>
+            </div>
+        </div>
+    </div>
 </div>
-
-<button id="backBtn" class="back hidden" onclick="goBack()">⬅ Back</button>
-
-<!-- RESULT -->
-<div id="result"></div>
-
-<!-- CULTURAL POSTS -->
-<h2 id="culturalTitle">Cultural Events</h2>
-<div id="culturalPosts" class="cultural-grid">
-  
-  <div class="card">
-    <img src="https://source.unsplash.com/400x250/?nepal,festival">
-    <h3>Newari Jatra Experience</h3>
-    <p>Experience culture, food & rituals</p>
-    <button onclick="openCulturalDetail()">View Details</button>
-  </div>
-
-</div>
-
-<!-- CULTURE DETAIL -->
-<div id="culturalDetail" class="hidden"></div>
-
-</div>
-
 
 <script>
-// ================= DATA =================
-const trips = {
-  dating: [
-    { name: "Pokhara Lakeside", image: "https://source.unsplash.com/600x350/?pokhara,lake", map: "Pokhara" },
-    { name: "Nagarkot Sunset", image: "https://source.unsplash.com/600x350/?nagarkot,sunset", map: "Nagarkot" }
-  ],
-  rural: [
-    { name: "Ghale Gaun Village", image: "https://source.unsplash.com/600x350/?nepal,village", map: "Ghale Gaun" }
-  ],
-  mountain: [
-    { name: "Ghandruk View Point", image: "https://source.unsplash.com/600x350/?ghandruk", map: "Ghandruk" }
-  ],
-  cultural: [
-    { name: "Bhaktapur Durbar", image: "https://source.unsplash.com/600x350/?bhaktapur", map: "Bhaktapur" }
-  ]
+const destinations = {
+    himalayan: { name: "Kalinchowk Snow Trip", transport: 1400, img: "https://images.unsplash.com/photo-1605640840605-14ac1855827b?q=80&w=800" },
+    dating: { name: "Nagarkot Sunrise", transport: 600, img: "https://images.unsplash.com/photo-1582239459521-825597711905?q=80&w=800" },
+    default: { name: "Patan Durbar Square", transport: 200, img: "https://images.unsplash.com/photo-1623492701902-47dc207df5dc?q=80&w=800" }
 };
 
-let index = 0;
-let activeList = [];
+function runPlanner() {
+    const input = document.getElementById('userInput').value.toLowerCase();
+    const budget = parseInt(input.match(/\d+/) || 2000);
+    
+    // logic selection
+    let category = "default";
+    if (input.includes("himalayan") || input.includes("mountain")) category = "himalayan";
+    if (input.includes("dating") || input.includes("couple")) category = "dating";
+    
+    const place = destinations[category];
+    const drinkCost = (input.includes("drink") || input.includes("beer")) ? 650 : 0;
+    
+    // Cost Calculations
+    const dailyCost = 1800; // Food + Basic Lodge
+    let remaining = budget - (place.transport + drinkCost);
+    let days = Math.max(1, Math.floor(remaining / dailyCost));
+    
+    const foodTotal = 800 * days;
+    const stayTotal = 1000 * days;
 
-// ================= MAIN FUNCTION =================
-function generateTrip() {
-  const text = document.getElementById("prompt").value.toLowerCase();
-  if(text.trim()==="") return alert("Please enter your plan 😊");
+    const resDiv = document.getElementById('results');
+    resDiv.innerHTML = `
+        <div class="card">
+            <img src="${place.img}">
+            <div class="card-content">
+                <h2>${place.name}</h2>
+                <p>Plan for <b>${days} Day(s)</b> based on your budget.</p>
+                <div class="price-box">
+                    <strong>💰 Budget Breakdown:</strong><br>
+                    🚌 Transport: NPR ${place.transport}<br>
+                    🍛 Food: NPR ${foodTotal}<br>
+                    🏠 Stay: NPR ${stayTotal}<br>
+                    ${drinkCost > 0 ? `🍺 Drink: NPR ${drinkCost}<br>` : ''}
+                    <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
+                    <strong>Total Est: NPR ${foodTotal + stayTotal + place.transport + drinkCost}</strong>
+                </div>
+                <button class="btn-go" style="width:100%">Confirm This Trip</button>
+            </div>
+        </div>
+    `;
 
-  let type = "dating";
-  if(text.includes("rural")||text.includes("village")) type="rural";
-  if(text.includes("mountain")||text.includes("himal")) type="mountain";
-  if(text.includes("culture")||text.includes("jatra")) type="cultural";
-
-  activeList = trips[type];
-  index = 0;
-
-  showTrip();
+    document.getElementById('home-feed').classList.add('hidden');
+    resDiv.classList.remove('hidden');
+    document.getElementById('backBtn').classList.remove('hidden');
 }
 
-// ================= SHOW TRIP =================
-function showTrip() {
-  const trip = activeList[index];
-
-  document.getElementById("result").innerHTML = `
-    <div class="card">
-      <h2>${trip.name}</h2>
-      <img src="${trip.image}">
-      <iframe src="https://maps.google.com/maps?q=${trip.map}&t=&z=11&output=embed"></iframe>
-
-      <div class="buttons">
-        <button class="book" onclick="alert('Booked Successfully!')">Book Now</button>
-        <button class="next" onclick="nextTrip()">Next Option ➜</button>
-      </div>
-    </div>
-  `;
-
-  hideHome();
-  document.getElementById("result").classList.remove("hidden");
-  document.getElementById("backBtn").classList.remove("hidden");
-}
-
-// ================= NEXT =================
-function nextTrip(){
-  index++;
-  if(index>=activeList.length) index=0;
-  showTrip();
-}
-
-// ================= CULTURAL DETAIL =================
-function openCulturalDetail(){
-  hideHome();
-  
-  document.getElementById("culturalDetail").innerHTML = `
-    <div class="card">
-      <h2>Newar Jatra Cultural Event</h2>
-      <img src="https://source.unsplash.com/600x350/?newar,festival">
-      <p><b>Caste:</b> Newar</p>
-      <p><b>Budget:</b> NPR 1000</p>
-      <p><b>People:</b> 2</p>
-      <p><i>"We show Jatra, culture & food for NPR 1000 for 2 persons."</i></p>
-
-      <iframe src="https://maps.google.com/maps?q=Bhaktapur&t=&z=12&output=embed"></iframe>
-
-      <button class="book" onclick="alert('Cultural Event Booked!')">Book Cultural Event</button>
-    </div>
-  `;
-
-  document.getElementById("culturalDetail").classList.remove("hidden");
-  document.getElementById("backBtn").classList.remove("hidden");
-}
-
-// ================= COMMON =================
-function hideHome(){
-  document.getElementById("culturalPosts").classList.add("hidden");
-  document.getElementById("culturalTitle").classList.add("hidden");
-}
-
-function goBack(){
-  document.getElementById("result").classList.add("hidden");
-  document.getElementById("culturalDetail").classList.add("hidden");
-  document.getElementById("backBtn").classList.add("hidden");
-
-  document.getElementById("culturalPosts").classList.remove("hidden");
-  document.getElementById("culturalTitle").classList.remove("hidden");
+function resetHome() {
+    document.getElementById('home-feed').classList.remove('hidden');
+    document.getElementById('results').classList.add('hidden');
+    document.getElementById('backBtn').classList.add('hidden');
+    document.getElementById('userInput').value = "";
 }
 </script>
 
