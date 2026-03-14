@@ -3,121 +3,184 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Nepal Yatra - Mobile Planner</title>
+<title>Nepal Yatra - Smart Budget Planner</title>
 
 <style>
-:root { 
-    --nepal-red: #DC143C; 
-    --nepal-blue: #003893; 
-    --light-bg: #f2f5f8; 
-    --white: #ffffff;
+:root{
+    --nepal-red:#DC143C;
+    --nepal-blue:#003893;
+    --light-bg:#f2f5f8;
+    --white:#ffffff;
+    --text:#222;
+    --muted:#666;
 }
 
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-body { 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-    background: var(--light-bg); 
-    margin: 0; 
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
-/* Header */
-header { 
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-    url('https://images.unsplash.com/photo-1540962351504-03099e0a75c3?q=80&w=1000'); 
-    background-size: cover; 
-    background-position: center;
-    width: 100%;
-    padding: 40px 20px; 
-    text-align: center;
-    color: white;
+body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--light-bg);
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
-.logo { 
-    width: 70px; 
-    border-radius: 10px;
+header{
+    background:
+        linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+        url('https://images.unsplash.com/photo-1540962351504-03099e0a75c3?q=80&w=1000');
+    background-size:cover;
+    background-position:center;
+    width:100%;
+    padding:40px 20px;
+    text-align:center;
+    color:white;
 }
 
-.container { 
-    width: 92%; 
-    max-width: 450px; 
-    margin-top: -30px; 
+.logo{
+    width:70px;
+    border-radius:12px;
 }
 
-/* Search Area */
-.search-area { 
-    background: var(--white); 
-    padding: 15px; 
-    border-radius: 15px; 
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.container{
+    width:92%;
+    max-width:450px;
+    margin-top:-30px;
+    padding-bottom:30px;
 }
 
-input { 
-    padding: 15px; 
-    border: 1px solid #ddd; 
-    border-radius: 10px; 
-    font-size: 16px; 
-    width: 100%;
+.search-area{
+    background:var(--white);
+    padding:15px;
+    border-radius:16px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
 }
 
-.btn-go { 
-    background: var(--nepal-red); 
-    color: white; 
-    border: none; 
-    padding: 15px; 
-    border-radius: 10px; 
-    font-weight: bold; 
-    font-size: 16px;
-    cursor: pointer;
+input{
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:16px;
+    width:100%;
 }
 
-/* Cards */
-.card { 
-    background: var(--white); 
-    border-radius: 18px; 
-    overflow: hidden; 
-    margin-top: 20px; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    animation: slideUp 0.3s ease-out;
+.btn-go{
+    background:var(--nepal-red);
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:10px;
+    font-weight:bold;
+    font-size:16px;
+    cursor:pointer;
 }
 
-@keyframes slideUp { 
-    from { opacity: 0; transform: translateY(20px); } 
-    to { opacity: 1; transform: translateY(0); } 
+.card{
+    background:var(--white);
+    border-radius:18px;
+    overflow:hidden;
+    margin-top:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.06);
+    animation:slideUp 0.3s ease-out;
 }
 
-.card img { width: 100%; height: 200px; object-fit: cover; }
-.card-content { padding: 20px; }
-
-.price-box { 
-    background: #f8f9fa; 
-    padding: 15px; 
-    border-radius: 12px; 
-    margin: 15px 0;
-    border-left: 5px solid var(--nepal-blue);
-    font-size: 0.95em;
+@keyframes slideUp{
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1; transform:translateY(0);}
 }
 
-.hidden { display: none; }
-
-.back-link { 
-    display: block; 
-    text-align: center; 
-    margin-top: 20px; 
-    color: #666; 
-    text-decoration: none; 
-    font-weight: bold;
+.card img{
+    width:100%;
+    height:210px;
+    object-fit:cover;
 }
 
-h2, h3 { margin: 0 0 10px 0; }
-p { color: #555; font-size: 0.95em; }
+.card-content{
+    padding:20px;
+}
+
+.price-box{
+    background:#f8f9fa;
+    padding:15px;
+    border-radius:12px;
+    margin:15px 0;
+    border-left:5px solid var(--nepal-blue);
+    font-size:0.95em;
+    line-height:1.7;
+}
+
+.day-card{
+    background:#fafafa;
+    border:1px solid #e8e8e8;
+    border-left:5px solid var(--nepal-red);
+    border-radius:14px;
+    padding:14px;
+    margin-top:12px;
+}
+
+.day-card h4{
+    margin:0 0 8px 0;
+    color:var(--nepal-blue);
+}
+
+.day-card p{
+    margin:6px 0;
+    color:var(--muted);
+}
+
+.notice{
+    background:#fff3cd;
+    color:#7a5d00;
+    padding:12px;
+    border-radius:10px;
+    margin-top:12px;
+    font-size:14px;
+    line-height:1.6;
+}
+
+.error-box{
+    background:#ffe2e2;
+    color:#9b1c1c;
+    padding:14px;
+    border-radius:12px;
+    margin-top:18px;
+    line-height:1.6;
+}
+
+.hidden{
+    display:none;
+}
+
+.back-link{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#666;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+h2,h3{
+    margin:0 0 10px 0;
+}
+
+p{
+    color:#555;
+    font-size:0.95em;
+}
+
+.small-text{
+    font-size:14px;
+    color:#777;
+}
 </style>
 </head>
 
@@ -132,18 +195,22 @@ p { color: #555; font-size: 0.95em; }
 <div class="container">
 
     <div class="search-area">
-        <input type="text" id="userInput" placeholder="I have 4000 for rural trip...">
+        <input
+            type="text"
+            id="userInput"
+            placeholder="Example: I have 120000 for sagarmatha base camp"
+        >
         <button class="btn-go" onclick="runPlanner()">Create My Plan</button>
     </div>
 
     <div id="results" class="hidden"></div>
-    <a href="#" id="backBtn" class="back-link hidden" onclick="resetHome()">⬅ Back to Home</a>
+    <a href="#" id="backBtn" class="back-link hidden" onclick="resetHome(event)">⬅ Back to Home</a>
 
     <div id="home-feed">
-        <h4 style="margin: 25px 0 10px 5px; color: #444;">Upcoming Cultural Highlights</h4>
+        <h4 style="margin:25px 0 10px 5px; color:#444;">Upcoming Cultural Highlights</h4>
 
         <div class="card">
-            <img src="Masto.JPG">
+            <img src="Masto.JPG" alt="Masto Festival">
             <div class="card-content">
                 <h3 style="color: var(--nepal-red);">Masto Festival</h3>
                 <p>The Khas culture of Karnali is celebrated in full swing around Jumla.</p>
@@ -151,109 +218,370 @@ p { color: #555; font-size: 0.95em; }
         </div>
 
         <div class="card">
-            <img src="balan.jpg">
+            <img src="balan.jpg" alt="Balan">
             <div class="card-content">
                 <h3 style="color: var(--nepal-blue);">Balan</h3>
                 <p>Traditional Balan cultural performance experience.</p>
             </div>
         </div>
-
     </div>
+
 </div>
 
 <script>
-
 const destinations = {
-    himalayan: { 
-        name: "Sagarmatha Snow Trip", 
-        transport: 1400, 
-        img: "https://images.unsplash.com/photo-1605640840605-14ac1855827b?q=80&w=800" 
+    himalayan: {
+        name: "Everest Base Camp Trek",
+        transport: 35000,
+        foodPerDay: 2500,
+        stayPerDay: 1200,
+        img: "https://images.unsplash.com/photo-1605640840605-14ac1855827b?q=80&w=900",
+        itinerary: [
+            {
+                destination: "Kathmandu",
+                activity: "Arrival, permit preparation, gear checking, trek briefing",
+                food: "Dal Bhat, tea, light dinner"
+            },
+            {
+                destination: "Lukla to Phakding",
+                activity: "Flight to Lukla and short trek to Phakding",
+                food: "Bread, soup, Dal Bhat"
+            },
+            {
+                destination: "Phakding to Namche Bazaar",
+                activity: "Trek through suspension bridges and uphill climb to Namche",
+                food: "Dal Bhat, noodles, hot tea"
+            },
+            {
+                destination: "Namche Bazaar",
+                activity: "Acclimatization day, Everest view point, local market walk",
+                food: "Porridge, momo, tea"
+            },
+            {
+                destination: "Namche to Tengboche",
+                activity: "Mountain trail trek and monastery visit",
+                food: "Soup, rice set, tea"
+            },
+            {
+                destination: "Tengboche to Dingboche",
+                activity: "Scenic trek through villages and high-altitude route",
+                food: "Chapati, potato curry, tea"
+            },
+            {
+                destination: "Dingboche",
+                activity: "Acclimatization hike and rest",
+                food: "Oatmeal, soup, Dal Bhat"
+            },
+            {
+                destination: "Dingboche to Lobuche",
+                activity: "High-altitude trekking with memorial site visit",
+                food: "Garlic soup, noodles, tea"
+            },
+            {
+                destination: "Lobuche to Gorakshep and Everest Base Camp",
+                activity: "Trek to Gorakshep, visit Everest Base Camp, return to lodge",
+                food: "Energy breakfast, soup, rice set"
+            },
+            {
+                destination: "Gorakshep to Kala Patthar to Pheriche",
+                activity: "Early morning viewpoint hike and descent",
+                food: "Tea, porridge, Dal Bhat"
+            },
+            {
+                destination: "Pheriche to Namche Bazaar",
+                activity: "Long return trek through mountain trail",
+                food: "Soup, roti, vegetables"
+            },
+            {
+                destination: "Namche to Lukla",
+                activity: "Final descent and last night in trekking route",
+                food: "Breakfast set, tea, dinner"
+            },
+            {
+                destination: "Lukla to Kathmandu / Return Home",
+                activity: "Flight back to Kathmandu and return home",
+                food: "Breakfast, tea, light meal"
+            }
+        ]
     },
-    dating: { 
-        name: "Nagarkot Sunrise", 
-        transport: 600, 
-        img: "https://images.unsplash.com/photo-1582239459521-825597711905?q=80&w=800" 
+
+    rural: {
+        name: "Karnali Rural Village Experience",
+        transport: 900,
+        foodPerDay: 800,
+        stayPerDay: 1000,
+        img: "https://images.unsplash.com/photo-1593697821252-0c9137d89b88?q=80&w=900",
+        itinerary: [
+            {
+                destination: "Village Arrival",
+                activity: "Travel to village, homestay check-in, meet local family",
+                food: "Dal Bhat, local tea"
+            },
+            {
+                destination: "Community Area",
+                activity: "Village walk, farm visit, local interaction",
+                food: "Dhido, tarkari, curd"
+            },
+            {
+                destination: "Cultural Ground",
+                activity: "Traditional music and cultural performance",
+                food: "Sel roti, achar, tea"
+            },
+            {
+                destination: "Nearby Hill",
+                activity: "Morning hike, photography and local exploration",
+                food: "Breakfast set, local lunch"
+            },
+            {
+                destination: "Return Home",
+                activity: "Departure from village and travel back home",
+                food: "Tea, snacks, lunch"
+            }
+        ]
     },
-    rural: { 
-        name: "Karnali Rural Village Experience", 
-        transport: 900, 
-        img: "https://images.unsplash.com/photo-1593697821252-0c9137d89b88?q=80&w=800" 
+
+    dating: {
+        name: "Nagarkot Sunrise Couple Trip",
+        transport: 600,
+        foodPerDay: 700,
+        stayPerDay: 1500,
+        img: "https://images.unsplash.com/photo-1582239459521-825597711905?q=80&w=900",
+        itinerary: [
+            {
+                destination: "Nagarkot",
+                activity: "Travel, hotel check-in, sunset view",
+                food: "Coffee, snacks, dinner set"
+            },
+            {
+                destination: "Nagarkot View Tower",
+                activity: "Sunrise view, couple walk, relaxation",
+                food: "Breakfast set, momo, tea"
+            },
+            {
+                destination: "Bhaktapur",
+                activity: "Heritage visit, café stop and local sightseeing",
+                food: "Juju dhau, chatamari, lunch set"
+            },
+            {
+                destination: "Return Home",
+                activity: "Return journey and trip completion",
+                food: "Breakfast, tea, snacks"
+            }
+        ]
     },
-    default: { 
-        name: "Pokhara Lakeside", 
-        transport: 200, 
-        img: "https://images.unsplash.com/photo-1623492701902-47dc207df5dc?q=80&w=800" 
+
+    default: {
+        name: "Pokhara Lakeside Trip",
+        transport: 500,
+        foodPerDay: 850,
+        stayPerDay: 1200,
+        img: "https://images.unsplash.com/photo-1623492701902-47dc207df5dc?q=80&w=900",
+        itinerary: [
+            {
+                destination: "Pokhara Lakeside",
+                activity: "Travel to Pokhara, lakeside walk, boating",
+                food: "Dal Bhat, juice, dinner"
+            },
+            {
+                destination: "Sarangkot",
+                activity: "Sunrise trip, viewpoint visit and relaxation",
+                food: "Breakfast set, tea, lunch"
+            },
+            {
+                destination: "Davis Falls",
+                activity: "Sightseeing and local shopping",
+                food: "Snacks, lunch set, tea"
+            },
+            {
+                destination: "Return Home",
+                activity: "Travel back home and trip completion",
+                food: "Breakfast, lunch, tea"
+            }
+        ]
     }
 };
 
-function runPlanner() {
+function getBudgetFromText(text) {
+    const match = text.match(/(\d[\d,]*)/);
+    return match ? parseInt(match[1].replace(/,/g, ""), 10) : null;
+}
 
-    const input = document.getElementById('userInput').value.toLowerCase();
-    const budgetMatch = input.match(/\d+/);
-    const budget = budgetMatch ? parseInt(budgetMatch[0]) : 2000;
+function getCategory(text) {
+    text = text.toLowerCase();
 
-    let category = "default";
+    if (
+        text.includes("mountain") ||
+        text.includes("himalaya") ||
+        text.includes("himalayan") ||
+        text.includes("sagarmatha") ||
+        text.includes("everest") ||
+        text.includes("base camp")
+    ) {
+        return "himalayan";
+    }
 
-    if (input.includes("himalayan") || input.includes("mountain"))
-        category = "himalayan";
+    if (
+        text.includes("rural") ||
+        text.includes("village") ||
+        text.includes("local")
+    ) {
+        return "rural";
+    }
 
-    else if (input.includes("dating") || input.includes("couple"))
-        category = "dating";
+    if (
+        text.includes("dating") ||
+        text.includes("couple") ||
+        text.includes("romantic")
+    ) {
+        return "dating";
+    }
 
-    else if (input.includes("rural") || input.includes("village") || input.includes("local"))
-        category = "rural";
+    return "default";
+}
 
-    const place = destinations[category];
-    const drinkCost = (input.includes("drink") || input.includes("beer")) ? 650 : 0;
+function buildItinerary(place) {
+    let html = "";
 
-    const dailyCost = 1800;
-    let remaining = budget - (place.transport + drinkCost);
-    let days = Math.max(1, Math.floor(remaining / dailyCost));
-
-    const foodTotal = 800 * days;
-    const stayTotal = 1000 * days;
-
-    const total = foodTotal + stayTotal + place.transport + drinkCost;
-
-    const resDiv = document.getElementById('results');
-
-    resDiv.innerHTML = `
-        <div class="card">
-            <img src="${place.img}">
-            <div class="card-content">
-                <h2>${place.name}</h2>
-                <p>Plan for <b>${days} Day(s)</b> based on your budget.</p>
-
-                <div class="price-box">
-                    <strong>💰 Budget Breakdown:</strong><br>
-                    🚌 Transport: NPR ${place.transport}<br>
-                    🍛 Food: NPR ${foodTotal}<br>
-                    🏠 Stay: NPR ${stayTotal}<br>
-                    ${drinkCost > 0 ? `🍺 Drink: NPR ${drinkCost}<br>` : ''}
-                    <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
-                    <strong>Total Est: NPR ${total}</strong>
-                </div>
-
-                <button class="btn-go" style="width:100%">Confirm This Trip</button>
+    place.itinerary.forEach((item, index) => {
+        html += `
+            <div class="day-card">
+                <h4>Day ${index + 1}</h4>
+                <p><strong>Destination:</strong> ${item.destination}</p>
+                <p><strong>Activity:</strong> ${item.activity}</p>
+                <p><strong>Food:</strong> ${item.food}</p>
             </div>
-        </div>
-    `;
+        `;
+    });
 
-    document.getElementById('home-feed').classList.add('hidden');
-    resDiv.classList.remove('hidden');
-    document.getElementById('backBtn').classList.remove('hidden');
+    return html;
 }
 
-function resetHome() {
-    document.getElementById('home-feed').classList.remove('hidden');
-    document.getElementById('results').classList.add('hidden');
-    document.getElementById('backBtn').classList.add('hidden');
-    document.getElementById('userInput').value = "";
+function runPlanner() {
+    const input = document.getElementById("userInput").value.trim().toLowerCase();
+    const results = document.getElementById("results");
+
+    if (!input) {
+        results.classList.remove("hidden");
+        results.innerHTML = `
+            <div class="error-box">
+                Please type something like:
+                <br><strong>I have 120000 for sagarmatha base camp</strong>
+            </div>
+        `;
+        document.getElementById("home-feed").classList.add("hidden");
+        document.getElementById("backBtn").classList.remove("hidden");
+        return;
+    }
+
+    const budget = getBudgetFromText(input);
+
+    if (!budget) {
+        results.classList.remove("hidden");
+        results.innerHTML = `
+            <div class="error-box">
+                Please include your budget in the sentence.
+                <br>Example: <strong>I have 7000 for rural trip</strong>
+            </div>
+        `;
+        document.getElementById("home-feed").classList.add("hidden");
+        document.getElementById("backBtn").classList.remove("hidden");
+        return;
+    }
+
+    const category = getCategory(input);
+    const place = destinations[category];
+
+    const totalDays = place.itinerary.length;
+    const totalFood = place.foodPerDay * totalDays;
+    const totalStay = place.stayPerDay * totalDays;
+    const fullTripCost = place.transport + totalFood + totalStay;
+    const remaining = budget - fullTripCost;
+
+    if (budget < fullTripCost) {
+        results.innerHTML = `
+            <div class="card">
+                <img src="${place.img}" alt="${place.name}">
+                <div class="card-content">
+                    <h2>${place.name}</h2>
+
+                    <div class="error-box">
+                        Your budget is not enough to complete the full trip and return home.
+                        <br><strong>Your budget:</strong> NPR ${budget}
+                        <br><strong>Required for full ${totalDays}-day round trip:</strong> NPR ${fullTripCost}
+                        <br><strong>Need more:</strong> NPR ${fullTripCost - budget}
+                    </div>
+
+                    <div class="price-box">
+                        <strong>Full Round Trip Cost</strong><br>
+                        🚌 Transport: NPR ${place.transport}<br>
+                        🍛 Food (${totalDays} days): NPR ${totalFood}<br>
+                        🏠 Stay (${totalDays} days): NPR ${totalStay}<br>
+                        <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
+                        <strong>Total Cost: NPR ${fullTripCost}</strong>
+                    </div>
+
+                    <h3 style="margin-top:20px; color: var(--nepal-red);">Full Day Wise Plan</h3>
+                    <p class="small-text">This itinerary includes all days until return home.</p>
+
+                    ${buildItinerary(place)}
+                </div>
+            </div>
+        `;
+    } else {
+        results.innerHTML = `
+            <div class="card">
+                <img src="${place.img}" alt="${place.name}">
+                <div class="card-content">
+                    <h2>${place.name}</h2>
+                    <p>
+                        Based on your budget of <strong>NPR ${budget}</strong>,
+                        you can complete the full <strong>${totalDays}-day trip</strong> and return home.
+                    </p>
+
+                    <div class="notice">
+                        Your budget is enough for the complete round trip, including the final return-home day.
+                    </div>
+
+                    <div class="price-box">
+                        <strong>💰 Full Trip Budget Breakdown</strong><br>
+                        🚌 Transport: NPR ${place.transport}<br>
+                        🍛 Food (${totalDays} days): NPR ${totalFood}<br>
+                        🏠 Stay (${totalDays} days): NPR ${totalStay}<br>
+                        <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
+                        <strong>Total Cost: NPR ${fullTripCost}</strong><br>
+                        <strong>Remaining Budget: NPR ${remaining}</strong>
+                    </div>
+
+                    <h3 style="margin-top:20px; color: var(--nepal-red);">Day Wise Plan</h3>
+                    <p class="small-text">This itinerary includes all days until return home.</p>
+
+                    ${buildItinerary(place)}
+
+                    <button class="btn-go" style="width:100%; margin-top:18px;">Confirm This Trip</button>
+                </div>
+            </div>
+        `;
+    }
+
+    document.getElementById("home-feed").classList.add("hidden");
+    results.classList.remove("hidden");
+    document.getElementById("backBtn").classList.remove("hidden");
 }
 
+function resetHome(event) {
+    event.preventDefault();
+    document.getElementById("home-feed").classList.remove("hidden");
+    document.getElementById("results").classList.add("hidden");
+    document.getElementById("backBtn").classList.add("hidden");
+    document.getElementById("userInput").value = "";
+}
+
+document.getElementById("userInput").addEventListener("keypress", function(e){
+    if (e.key === "Enter") {
+        runPlanner();
+    }
+});
 </script>
 
 </body>
 </html>
-
-
