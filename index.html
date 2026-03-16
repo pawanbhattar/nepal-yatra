@@ -155,6 +155,17 @@ input{
     line-height:1.6;
 }
 
+.event-meta{
+    background:#f8f9fa;
+    border-left:4px solid var(--nepal-blue);
+    padding:10px 12px;
+    border-radius:10px;
+    margin-top:12px;
+    font-size:14px;
+    color:#444;
+    line-height:1.7;
+}
+
 .hidden{
     display:none;
 }
@@ -198,7 +209,7 @@ p{
         <input
             type="text"
             id="userInput"
-            placeholder="Example: I have 120000 for sagarmatha base camp"
+            placeholder="Example: I have 7000 for rural trip with drink"
         >
         <button class="btn-go" onclick="runPlanner()">Create My Plan</button>
     </div>
@@ -214,6 +225,12 @@ p{
             <div class="card-content">
                 <h3 style="color: var(--nepal-red);">Masto Festival</h3>
                 <p>The Khas culture of Karnali is celebrated in full swing around Jumla.</p>
+
+                <div class="event-meta">
+                    <strong>Date:</strong> 20 April 2026<br>
+                    <strong>Duration:</strong> 1 Day Event<br>
+                    <strong>Ticket Price:</strong> NPR 1500
+                </div>
             </div>
         </div>
 
@@ -222,6 +239,12 @@ p{
             <div class="card-content">
                 <h3 style="color: var(--nepal-blue);">Balan</h3>
                 <p>Traditional Balan cultural performance experience.</p>
+
+                <div class="event-meta">
+                    <strong>Date:</strong> 27 April 2026<br>
+                    <strong>Duration:</strong> 1 Day Event<br>
+                    <strong>Ticket Price:</strong> NPR 1500
+                </div>
             </div>
         </div>
     </div>
@@ -354,7 +377,7 @@ const destinations = {
             },
             {
                 destination: "Nagarkot View Tower",
-                activity: "Sunrise view, couple walk, relaxation",
+                activity: "Sunrise view, walk, relaxation",
                 food: "Breakfast set, momo, tea"
             },
             {
@@ -439,6 +462,19 @@ function getCategory(text) {
     return "default";
 }
 
+function getDrinkCost(text, totalDays) {
+    const hasDrink =
+        text.includes("drink") ||
+        text.includes("juice") ||
+        text.includes("tea") ||
+        text.includes("coffee") ||
+        text.includes("cold drink");
+
+    if (!hasDrink) return 0;
+
+    return 300 * totalDays;
+}
+
 function buildItinerary(place) {
     let html = "";
 
@@ -465,7 +501,7 @@ function runPlanner() {
         results.innerHTML = `
             <div class="error-box">
                 Please type something like:
-                <br><strong>I have 120000 for sagarmatha base camp</strong>
+                <br><strong>I have 7000 for rural trip with drink</strong>
             </div>
         `;
         document.getElementById("home-feed").classList.add("hidden");
@@ -480,7 +516,7 @@ function runPlanner() {
         results.innerHTML = `
             <div class="error-box">
                 Please include your budget in the sentence.
-                <br>Example: <strong>I have 7000 for rural trip</strong>
+                <br>Example: <strong>I have 120000 for sagarmatha base camp with tea</strong>
             </div>
         `;
         document.getElementById("home-feed").classList.add("hidden");
@@ -494,7 +530,8 @@ function runPlanner() {
     const totalDays = place.itinerary.length;
     const totalFood = place.foodPerDay * totalDays;
     const totalStay = place.stayPerDay * totalDays;
-    const fullTripCost = place.transport + totalFood + totalStay;
+    const drinkCost = getDrinkCost(input, totalDays);
+    const fullTripCost = place.transport + totalFood + totalStay + drinkCost;
     const remaining = budget - fullTripCost;
 
     if (budget < fullTripCost) {
@@ -516,6 +553,7 @@ function runPlanner() {
                         🚌 Transport: NPR ${place.transport}<br>
                         🍛 Food (${totalDays} days): NPR ${totalFood}<br>
                         🏠 Stay (${totalDays} days): NPR ${totalStay}<br>
+                        ${drinkCost > 0 ? `🥤 Drink/Refreshment (${totalDays} days): NPR ${drinkCost}<br>` : ""}
                         <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
                         <strong>Total Cost: NPR ${fullTripCost}</strong>
                     </div>
@@ -547,6 +585,7 @@ function runPlanner() {
                         🚌 Transport: NPR ${place.transport}<br>
                         🍛 Food (${totalDays} days): NPR ${totalFood}<br>
                         🏠 Stay (${totalDays} days): NPR ${totalStay}<br>
+                        ${drinkCost > 0 ? `🥤 Drink/Refreshment (${totalDays} days): NPR ${drinkCost}<br>` : ""}
                         <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
                         <strong>Total Cost: NPR ${fullTripCost}</strong><br>
                         <strong>Remaining Budget: NPR ${remaining}</strong>
