@@ -11,7 +11,6 @@
     --nepal-blue:#003893;
     --light-bg:#f2f5f8;
     --white:#ffffff;
-    --text:#222;
     --muted:#666;
 }
 
@@ -81,6 +80,19 @@ input{
     font-weight:bold;
     font-size:16px;
     cursor:pointer;
+}
+
+.btn-secondary{
+    background:var(--nepal-blue);
+    color:white;
+    border:none;
+    padding:12px 14px;
+    border-radius:10px;
+    font-weight:bold;
+    font-size:15px;
+    cursor:pointer;
+    width:100%;
+    margin-top:14px;
 }
 
 .card{
@@ -192,6 +204,48 @@ p{
     font-size:14px;
     color:#777;
 }
+
+.popup-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    z-index:9999;
+}
+
+.popup-box{
+    background:#fff;
+    width:100%;
+    max-width:360px;
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    text-align:center;
+    animation:slideUp 0.25s ease-out;
+}
+
+.popup-box h3{
+    margin-bottom:10px;
+    color:var(--nepal-red);
+}
+
+.popup-box p{
+    margin:10px 0 18px 0;
+    line-height:1.6;
+}
+
+.popup-close{
+    background:var(--nepal-red);
+    color:#fff;
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
 </style>
 </head>
 
@@ -231,6 +285,8 @@ p{
                     <strong>Duration:</strong> 1 Day Event<br>
                     <strong>Ticket Price:</strong> NPR 1500
                 </div>
+
+                <button class="btn-secondary" onclick="bookEvent('Masto Festival')">Book Now</button>
             </div>
         </div>
 
@@ -245,10 +301,20 @@ p{
                     <strong>Duration:</strong> 1 Day Event<br>
                     <strong>Ticket Price:</strong> NPR 1500
                 </div>
+
+                <button class="btn-secondary" onclick="bookEvent('Balan')">Book Now</button>
             </div>
         </div>
     </div>
 
+</div>
+
+<div class="popup-overlay" id="popupOverlay">
+    <div class="popup-box">
+        <h3 id="popupTitle">Message</h3>
+        <p id="popupMessage"></p>
+        <button class="popup-close" onclick="closePopup()">OK</button>
+    </div>
 </div>
 
 <script>
@@ -492,6 +558,35 @@ function buildItinerary(place) {
     return html;
 }
 
+function showPopup(title, message) {
+    document.getElementById("popupTitle").innerText = title;
+    document.getElementById("popupMessage").innerText = message;
+    document.getElementById("popupOverlay").style.display = "flex";
+}
+
+function closePopup() {
+    document.getElementById("popupOverlay").style.display = "none";
+}
+
+function bookEvent(eventName) {
+    showPopup("Booking Successful", eventName + " booked successfully.");
+}
+
+function bookTrip(placeName, fullTripCost, budget) {
+    if (budget < fullTripCost) {
+        showPopup(
+            "Booking Failed",
+            "Your budget is less. You cannot book this trip."
+        );
+        return;
+    }
+
+    showPopup(
+        "Booking Successful",
+        placeName + " booked successfully."
+    );
+}
+
 function runPlanner() {
     const input = document.getElementById("userInput").value.trim().toLowerCase();
     const results = document.getElementById("results");
@@ -532,63 +627,49 @@ function runPlanner() {
     const totalStay = place.stayPerDay * totalDays;
     const drinkCost = getDrinkCost(input, totalDays);
     const fullTripCost = place.transport + totalFood + totalStay + drinkCost;
+    const shortfall = fullTripCost - budget;
     const remaining = budget - fullTripCost;
 
-    if (budget < fullTripCost) {
+    // If budget is more than 1000 less than required, do not show place/package
+    if (shortfall > 1000) {
         results.innerHTML = `
-            <div class="card">
-                <img src="${place.img}" alt="${place.name}">
-                <div class="card-content">
-                    <h2>${place.name}</h2>
-
-                    <div class="error-box">
-                        Your budget is not enough to complete the full trip and return home.
-                        <br><strong>Your budget:</strong> NPR ${budget}
-                        <br><strong>Required for full ${totalDays}-day round trip:</strong> NPR ${fullTripCost}
-                        <br><strong>Need more:</strong> NPR ${fullTripCost - budget}
-                    </div>
-
-                    <div class="price-box">
-                        <strong>Full Round Trip Cost</strong><br>
-                        🚌 Transport: NPR ${place.transport}<br>
-                        🍛 Food (${totalDays} days): NPR ${totalFood}<br>
-                        🏠 Stay (${totalDays} days): NPR ${totalStay}<br>
-                        ${drinkCost > 0 ? `🥤 Drink/Refreshment (${totalDays} days): NPR ${drinkCost}<br>` : ""}
-                        <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
-                        <strong>Total Cost: NPR ${fullTripCost}</strong>
-                    </div>
-
-                    <h3 style="margin-top:20px; color: var(--nepal-red);">Full Day Wise Plan</h3>
-                    <p class="small-text">This itinerary includes all days until return home.</p>
-
-                    ${buildItinerary(place)}
-                </div>
+            <div class="error-box">
+                Your budget is too low for this package, so this place is not shown.
+                <br><strong>Your budget:</strong> NPR ${budget}
+                <br><strong>Required budget:</strong> NPR ${fullTripCost}
+                <br><strong>Need more:</strong> NPR ${shortfall}
             </div>
         `;
-    } else {
+
+        document.getElementById("home-feed").classList.add("hidden");
+        results.classList.remove("hidden");
+        document.getElementById("backBtn").classList.remove("hidden");
+        return;
+    }
+
+    // If budget is short by 1000 or less, show the place but do not allow booking
+    if (shortfall > 0 && shortfall <= 1000) {
         results.innerHTML = `
             <div class="card">
                 <img src="${place.img}" alt="${place.name}">
                 <div class="card-content">
                     <h2>${place.name}</h2>
-                    <p>
-                        Based on your budget of <strong>NPR ${budget}</strong>,
-                        you can complete the full <strong>${totalDays}-day trip</strong> and return home.
-                    </p>
 
                     <div class="notice">
-                        Your budget is enough for the complete round trip, including the final return-home day.
+                        This package is close to your budget, so it is shown.
+                        But your budget is still less, so you cannot book it.
                     </div>
 
                     <div class="price-box">
-                        <strong>💰 Full Trip Budget Breakdown</strong><br>
+                        <strong>Trip Budget Breakdown</strong><br>
                         🚌 Transport: NPR ${place.transport}<br>
                         🍛 Food (${totalDays} days): NPR ${totalFood}<br>
                         🏠 Stay (${totalDays} days): NPR ${totalStay}<br>
                         ${drinkCost > 0 ? `🥤 Drink/Refreshment (${totalDays} days): NPR ${drinkCost}<br>` : ""}
                         <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
                         <strong>Total Cost: NPR ${fullTripCost}</strong><br>
-                        <strong>Remaining Budget: NPR ${remaining}</strong>
+                        <strong>Your Budget: NPR ${budget}</strong><br>
+                        <strong>Need More: NPR ${shortfall}</strong>
                     </div>
 
                     <h3 style="margin-top:20px; color: var(--nepal-red);">Day Wise Plan</h3>
@@ -596,11 +677,56 @@ function runPlanner() {
 
                     ${buildItinerary(place)}
 
-                    <button class="btn-go" style="width:100%; margin-top:18px;">Confirm This Trip</button>
+                    <button class="btn-go" style="width:100%; margin-top:18px;" onclick="bookTrip('${place.name}', ${fullTripCost}, ${budget})">
+                        Book This Trip
+                    </button>
                 </div>
             </div>
         `;
+
+        document.getElementById("home-feed").classList.add("hidden");
+        results.classList.remove("hidden");
+        document.getElementById("backBtn").classList.remove("hidden");
+        return;
     }
+
+    // If budget is enough, show package and allow booking
+    results.innerHTML = `
+        <div class="card">
+            <img src="${place.img}" alt="${place.name}">
+            <div class="card-content">
+                <h2>${place.name}</h2>
+                <p>
+                    Based on your budget of <strong>NPR ${budget}</strong>,
+                    you can complete the full <strong>${totalDays}-day trip</strong> and return home.
+                </p>
+
+                <div class="notice">
+                    Your budget is enough for the complete round trip, including the final return-home day.
+                </div>
+
+                <div class="price-box">
+                    <strong>💰 Full Trip Budget Breakdown</strong><br>
+                    🚌 Transport: NPR ${place.transport}<br>
+                    🍛 Food (${totalDays} days): NPR ${totalFood}<br>
+                    🏠 Stay (${totalDays} days): NPR ${totalStay}<br>
+                    ${drinkCost > 0 ? `🥤 Drink/Refreshment (${totalDays} days): NPR ${drinkCost}<br>` : ""}
+                    <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
+                    <strong>Total Cost: NPR ${fullTripCost}</strong><br>
+                    <strong>Remaining Budget: NPR ${remaining}</strong>
+                </div>
+
+                <h3 style="margin-top:20px; color: var(--nepal-red);">Day Wise Plan</h3>
+                <p class="small-text">This itinerary includes all days until return home.</p>
+
+                ${buildItinerary(place)}
+
+                <button class="btn-go" style="width:100%; margin-top:18px;" onclick="bookTrip('${place.name}', ${fullTripCost}, ${budget})">
+                    Book This Trip
+                </button>
+            </div>
+        </div>
+    `;
 
     document.getElementById("home-feed").classList.add("hidden");
     results.classList.remove("hidden");
@@ -618,6 +744,12 @@ function resetHome(event) {
 document.getElementById("userInput").addEventListener("keypress", function(e){
     if (e.key === "Enter") {
         runPlanner();
+    }
+});
+
+document.getElementById("popupOverlay").addEventListener("click", function(e){
+    if (e.target.id === "popupOverlay") {
+        closePopup();
     }
 });
 </script>
