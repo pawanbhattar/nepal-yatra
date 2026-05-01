@@ -1,612 +1,758 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nepal Yatra - Budget Travel Planner</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-boxz
-      font-family: Arial, sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Nepal Yatra - Smart Budget Planner</title>
 
-    body {
-      background: #f4f7fb;
-      color: #1f2937;
-    }
+<style>
+:root{
+    --nepal-red:#DC143C;
+    --nepal-blue:#003893;
+    --light-bg:#f2f5f8;
+    --white:#ffffff;
+    --muted:#666;
+}
 
-    header {
-      background: linear-gradient(135deg, #0f172a, #1d4ed8);
-      color: white;
-      padding: 28px 8%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
 
-    .logo {
-      font-size: 28px;
-      font-weight: bold;
-    }
+body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--light-bg);
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 20px;
-      font-weight: 500;
-    }
+header{
+    background:
+        linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+        url('https://images.unsplash.com/photo-1540962351504-03099e0a75c3?q=80&w=1000');
+    background-size:cover;
+    background-position:center;
+    width:100%;
+    padding:40px 20px;
+    text-align:center;
+    color:white;
+}
 
-    .hero {
-      padding: 60px 8%;
-      background: linear-gradient(135deg, #1e3a8a, #0f172a);
-      color: white;
-      text-align: center;
-    }
+.logo{
+    width:70px;
+    border-radius:12px;
+}
 
-    .hero h1 {
-      font-size: 42px;
-      margin-bottom: 16px;
-    }
+.container{
+    width:92%;
+    max-width:450px;
+    margin-top:-30px;
+    padding-bottom:30px;
+}
 
-    .hero p {
-      max-width: 720px;
-      margin: auto;
-      font-size: 18px;
-      line-height: 1.6;
-      color: #dbeafe;
-    }
+.search-area{
+    background:var(--white);
+    padding:15px;
+    border-radius:16px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
 
-    .section {
-      padding: 44px 8%;
-    }
+input{
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:16px;
+    width:100%;
+}
 
-    .section-title {
-      font-size: 28px;
-      margin-bottom: 20px;
-      color: #0f172a;
-    }
+.btn-go{
+    background:var(--nepal-red);
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:10px;
+    font-weight:bold;
+    font-size:16px;
+    cursor:pointer;
+}
 
-    .planner-box,
-    .event-form,
-    .card {
-      background: white;
-      border-radius: 18px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-    }
+.btn-secondary{
+    background:var(--nepal-blue);
+    color:white;
+    border:none;
+    padding:12px 14px;
+    border-radius:10px;
+    font-weight:bold;
+    font-size:15px;
+    cursor:pointer;
+    width:100%;
+    margin-top:14px;
+}
 
-    .planner-box textarea,
-    .event-form input,
-    .event-form textarea {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
-      font-size: 15px;
-      margin-bottom: 14px;
-    }
+.card{
+    background:var(--white);
+    border-radius:18px;
+    overflow:hidden;
+    margin-top:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.06);
+    animation:slideUp 0.3s ease-out;
+}
 
-    .planner-box textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
+@keyframes slideUp{
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1; transform:translateY(0);}
+}
 
-    button {
-      border: none;
-      background: #2563eb;
-      color: white;
-      padding: 13px 22px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s ease;
-    }
+.card img{
+    width:100%;
+    height:210px;
+    object-fit:cover;
+}
 
-    button:hover {
-      background: #1d4ed8;
-      transform: translateY(-1px);
-    }
+.card-content{
+    padding:20px;
+}
 
-    .secondary-btn {
-      background: #0f172a;
-    }
+.price-box{
+    background:#f8f9fa;
+    padding:15px;
+    border-radius:12px;
+    margin:15px 0;
+    border-left:5px solid var(--nepal-blue);
+    font-size:0.95em;
+    line-height:1.7;
+}
 
-    .secondary-btn:hover {
-      background: #111827;
-    }
+.day-card{
+    background:#fafafa;
+    border:1px solid #e8e8e8;
+    border-left:5px solid var(--nepal-red);
+    border-radius:14px;
+    padding:14px;
+    margin-top:12px;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 22px;
-      margin-top: 24px;
-    }
+.day-card h4{
+    margin:0 0 8px 0;
+    color:var(--nepal-blue);
+}
 
-    .card h3 {
-      font-size: 22px;
-      color: #1d4ed8;
-      margin-bottom: 10px;
-    }
+.day-card p{
+    margin:6px 0;
+    color:var(--muted);
+}
 
-    .card p {
-      line-height: 1.6;
-      margin-bottom: 8px;
-    }
+.notice{
+    background:#fff3cd;
+    color:#7a5d00;
+    padding:12px;
+    border-radius:10px;
+    margin-top:12px;
+    font-size:14px;
+    line-height:1.6;
+}
 
-    .price {
-      font-size: 20px;
-      font-weight: bold;
-      color: #16a34a;
-      margin: 12px 0;
-    }
+.error-box{
+    background:#ffe2e2;
+    color:#9b1c1c;
+    padding:14px;
+    border-radius:12px;
+    margin-top:18px;
+    line-height:1.6;
+}
 
-    .warning {
-      color: #dc2626;
-      font-weight: bold;
-      margin-top: 10px;
-    }
+.event-meta{
+    background:#f8f9fa;
+    border-left:4px solid var(--nepal-blue);
+    padding:10px 12px;
+    border-radius:10px;
+    margin-top:12px;
+    font-size:14px;
+    color:#444;
+    line-height:1.7;
+}
 
-    .success {
-      color: #16a34a;
-      font-weight: bold;
-      margin-top: 10px;
-    }
+.hidden{
+    display:none;
+}
 
-    .tag {
-      display: inline-block;
-      background: #dbeafe;
-      color: #1e40af;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 13px;
-      margin-bottom: 10px;
-    }
+.back-link{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#666;
+    text-decoration:none;
+    font-weight:bold;
+}
 
-    .hidden {
-      display: none;
-    }
+h2,h3{
+    margin:0 0 10px 0;
+}
 
-    .popup-bg {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.65);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 999;
-    }
+p{
+    color:#555;
+    font-size:0.95em;
+}
 
-    .popup {
-      background: white;
-      padding: 26px;
-      border-radius: 18px;
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    }
+.small-text{
+    font-size:14px;
+    color:#777;
+}
 
-    .popup h2 {
-      margin-bottom: 12px;
-      color: #0f172a;
-    }
+.popup-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    z-index:9999;
+}
 
-    .popup p {
-      margin-bottom: 18px;
-      line-height: 1.5;
-    }
+.popup-box{
+    background:#fff;
+    width:100%;
+    max-width:360px;
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    text-align:center;
+    animation:slideUp 0.25s ease-out;
+}
 
-    footer {
-      text-align: center;
-      padding: 24px;
-      background: #0f172a;
-      color: white;
-      margin-top: 40px;
-    }
+.popup-box h3{
+    margin-bottom:10px;
+    color:var(--nepal-red);
+}
 
-    @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 32px;
-      }
+.popup-box p{
+    margin:10px 0 18px 0;
+    line-height:1.6;
+}
 
-      nav a {
-        margin-left: 0;
-        margin-right: 14px;
-      }
-    }
-  </style>
+.popup-close{
+    background:var(--nepal-red);
+    color:#fff;
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+</style>
 </head>
+
 <body>
-  <header>
-    <div class="logo">Nepal Yatra</div>
-    <nav>
-      <a href="#planner">Planner</a>
-      <a href="#events">Cultural Events</a>
-      <a href="#post-event">Post Event</a>
-    </nav>
-  </header>
 
-  <section class="hero">
-    <h1>Plan Your Nepal Trip With Your Budget</h1>
-    <p>
-      Enter your budget and travel idea. Nepal Yatra suggests suitable destinations,
-      cost breakdowns, day-wise plans, and local cultural experiences.
-    </p>
-  </section>
+<header>
+    <img src="logos.png" class="logo" alt="Nepal Yatra Logo">
+    <h2>Nepal Yatra</h2>
+    <p>Travel with AI</p>
+</header>
 
-  <section class="section" id="planner">
-    <h2 class="section-title">AI Budget Travel Planner</h2>
-    <div class="planner-box">
-      <textarea id="userPrompt" placeholder="Example: I have 7000 for rural trip with drink"></textarea>
-      <button onclick="generatePlan()">Generate Trip Plan</button>
+<div class="container">
+
+    <div class="search-area">
+        <input
+            type="text"
+            id="userInput"
+            placeholder="Example: I have 7000 for rural trip with drink"
+        >
+        <button class="btn-go" onclick="runPlanner()">Create My Plan</button>
     </div>
 
-    <div id="tripResults" class="grid"></div>
-  </section>
+    <div id="results" class="hidden"></div>
+    <a href="#" id="backBtn" class="back-link hidden" onclick="resetHome(event)">⬅ Back to Home</a>
 
-  <section class="section" id="events">
-    <h2 class="section-title">Local Cultural Events</h2>
-    <div id="eventList" class="grid"></div>
-  </section>
+    <div id="home-feed">
+        <h4 style="margin:25px 0 10px 5px; color:#444;">Upcoming Cultural Highlights</h4>
 
-  <section class="section" id="post-event">
-    <h2 class="section-title">Post Cultural Event</h2>
-    <div class="event-form">
-      <input type="text" id="eventTitle" placeholder="Event title, e.g. Newar Jatra Experience" />
-      <input type="text" id="eventCulture" placeholder="Culture / Community, e.g. Newar, Rai, Khas" />
-      <input type="number" id="eventPrice" placeholder="Price per person in NPR" />
-      <input type="number" id="eventCapacity" placeholder="People capacity" />
-      <input type="date" id="eventDate" />
-      <textarea id="eventDescription" placeholder="Short event description"></textarea>
-      <button onclick="postEvent()">Post Event</button>
+        <div class="card">
+            <img src="Masto.JPG" alt="Masto Festival">
+            <div class="card-content">
+                <h3 style="color: var(--nepal-red);">Masto Festival</h3>
+                <p>The Khas culture of Karnali is celebrated in full swing around Jumla.</p>
+
+                <div class="event-meta">
+                    <strong>Date:</strong> 20 April 2026<br>
+                    <strong>Duration:</strong> 1 Day Event<br>
+                    <strong>Ticket Price:</strong> NPR 1500
+                </div>
+
+                <button class="btn-secondary" onclick="bookEvent('Masto Festival')">Book Now</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="balan.jpg" alt="Balan">
+            <div class="card-content">
+                <h3 style="color: var(--nepal-blue);">Balan</h3>
+                <p>Traditional Balan cultural performance experience.</p>
+
+                <div class="event-meta">
+                    <strong>Date:</strong> 27 April 2026<br>
+                    <strong>Duration:</strong> 1 Day Event<br>
+                    <strong>Ticket Price:</strong> NPR 1500
+                </div>
+
+                <button class="btn-secondary" onclick="bookEvent('Balan')">Book Now</button>
+            </div>
+        </div>
     </div>
-  </section>
 
-  <div class="popup-bg" id="popupBg">
-    <div class="popup">
-      <h2 id="popupTitle">Booking Status</h2>
-      <p id="popupMessage"></p>
-      <button onclick="closePopup()">Close</button>
+</div>
+
+<div class="popup-overlay" id="popupOverlay">
+    <div class="popup-box">
+        <h3 id="popupTitle">Message</h3>
+        <p id="popupMessage"></p>
+        <button class="popup-close" onclick="closePopup()">OK</button>
     </div>
-  </div>
+</div>
 
-  <footer>
-    © 2026 Nepal Yatra | Budget-based travel and cultural experience platform
-  </footer>
-
-  <script>
-    const packages = [
-      {
-        title: "Rural Village Experience",
-        category: "rural",
-        destination: "Khotang Village Stay",
-        days: 3,
-        transport: 2500,
-        foodPerDay: 700,
-        stayPerDay: 800,
-        description: "A peaceful rural trip with village lifestyle, local food, walking routes, and community experience.",
-        itinerary: [
-          "Day 1: Travel to village and local welcome dinner",
-          "Day 2: Village walk, farming experience, and cultural storytelling",
-          "Day 3: Local breakfast and return journey"
-        ]
-      },
-      {
-        title: "Pokhara Refresh Trip",
-        category: "default",
-        destination: "Pokhara",
-        days: 3,
-        transport: 3000,
-        foodPerDay: 900,
-        stayPerDay: 1200,
-        description: "A budget-friendly Pokhara plan with lakeside walk, caves, boating, and peaceful stay.",
-        itinerary: [
-          "Day 1: Travel to Pokhara and Lakeside walk",
-          "Day 2: Davis Falls, Gupteshwor Cave, boating, and sunset view",
-          "Day 3: Short city walk and return"
-        ]
-      },
-      {
-        title: "Couple Sunrise Trip",
-        category: "dating",
-        destination: "Nagarkot",
-        days: 2,
-        transport: 1800,
-        foodPerDay: 1000,
-        stayPerDay: 2200,
-        description: "A peaceful couple-friendly trip for sunrise, short hikes, photos, and a calm hotel stay.",
-        itinerary: [
-          "Day 1: Travel to Nagarkot, evening view, dinner",
-          "Day 2: Sunrise view, breakfast, short hike, return"
-        ]
-      },
-      {
-        title: "Himalayan Adventure",
-        category: "himalayan",
-        destination: "Everest Base Camp Region",
-        days: 10,
+<script>
+const destinations = {
+    himalayan: {
+        name: "Everest Base Camp Trek",
         transport: 35000,
         foodPerDay: 2500,
         stayPerDay: 1200,
-        description: "A high-budget mountain adventure for trekking lovers with Himalayan views and local Sherpa culture.",
+        img: "https://images.unsplash.com/photo-1605640840605-14ac1855827b?q=80&w=900",
         itinerary: [
-          "Day 1-2: Travel and acclimatization",
-          "Day 3-7: Trek through mountain villages",
-          "Day 8-10: Return trek and travel back"
+            {
+                destination: "Kathmandu",
+                activity: "Arrival, permit preparation, gear checking, trek briefing",
+                food: "Dal Bhat, tea, light dinner"
+            },
+            {
+                destination: "Lukla to Phakding",
+                activity: "Flight to Lukla and short trek to Phakding",
+                food: "Bread, soup, Dal Bhat"
+            },
+            {
+                destination: "Phakding to Namche Bazaar",
+                activity: "Trek through suspension bridges and uphill climb to Namche",
+                food: "Dal Bhat, noodles, hot tea"
+            },
+            {
+                destination: "Namche Bazaar",
+                activity: "Acclimatization day, Everest view point, local market walk",
+                food: "Porridge, momo, tea"
+            },
+            {
+                destination: "Namche to Tengboche",
+                activity: "Mountain trail trek and monastery visit",
+                food: "Soup, rice set, tea"
+            },
+            {
+                destination: "Tengboche to Dingboche",
+                activity: "Scenic trek through villages and high-altitude route",
+                food: "Chapati, potato curry, tea"
+            },
+            {
+                destination: "Dingboche",
+                activity: "Acclimatization hike and rest",
+                food: "Oatmeal, soup, Dal Bhat"
+            },
+            {
+                destination: "Dingboche to Lobuche",
+                activity: "High-altitude trekking with memorial site visit",
+                food: "Garlic soup, noodles, tea"
+            },
+            {
+                destination: "Lobuche to Gorakshep and Everest Base Camp",
+                activity: "Trek to Gorakshep, visit Everest Base Camp, return to lodge",
+                food: "Energy breakfast, soup, rice set"
+            },
+            {
+                destination: "Gorakshep to Kala Patthar to Pheriche",
+                activity: "Early morning viewpoint hike and descent",
+                food: "Tea, porridge, Dal Bhat"
+            },
+            {
+                destination: "Pheriche to Namche Bazaar",
+                activity: "Long return trek through mountain trail",
+                food: "Soup, roti, vegetables"
+            },
+            {
+                destination: "Namche to Lukla",
+                activity: "Final descent and last night in trekking route",
+                food: "Breakfast set, tea, dinner"
+            },
+            {
+                destination: "Lukla to Kathmandu / Return Home",
+                activity: "Flight back to Kathmandu and return home",
+                food: "Breakfast, tea, light meal"
+            }
         ]
-      }
-    ];
+    },
 
-    const events = [
-      {
-        title: "Masto Festival Experience",
-        culture: "Khas culture of Karnali",
-        price: 1500,
-        capacity: 20,
-        date: "2026-05-20",
-        description: "Experience traditional food, music, and cultural practices from Karnali."
-      },
-      {
-        title: "Traditional Balan Performance",
-        culture: "Nepali folk culture",
-        price: 1500,
-        capacity: 30,
-        date: "2026-06-02",
-        description: "A local performance-based cultural event with storytelling and traditional rhythm."
-      }
-    ];
+    rural: {
+        name: "Karnali Rural Village Experience",
+        transport: 900,
+        foodPerDay: 800,
+        stayPerDay: 1000,
+        img: "https://images.unsplash.com/photo-1593697821252-0c9137d89b88?q=80&w=900",
+        itinerary: [
+            {
+                destination: "Village Arrival",
+                activity: "Travel to village, homestay check-in, meet local family",
+                food: "Dal Bhat, local tea"
+            },
+            {
+                destination: "Community Area",
+                activity: "Village walk, farm visit, local interaction",
+                food: "Dhido, tarkari, curd"
+            },
+            {
+                destination: "Cultural Ground",
+                activity: "Traditional music and cultural performance",
+                food: "Sel roti, achar, tea"
+            },
+            {
+                destination: "Nearby Hill",
+                activity: "Morning hike, photography and local exploration",
+                food: "Breakfast set, local lunch"
+            },
+            {
+                destination: "Return Home",
+                activity: "Departure from village and travel back home",
+                food: "Tea, snacks, lunch"
+            }
+        ]
+    },
 
-    function extractBudget(text) {
-      const cleanedText = text.replaceAll(",", "").toLowerCase();
-      const numbers = cleanedText.match(/[0-9]+/g);
+    dating: {
+        name: "Nagarkot Sunrise Couple Trip",
+        transport: 600,
+        foodPerDay: 700,
+        stayPerDay: 1500,
+        img: "https://images.unsplash.com/photo-1582239459521-825597711905?q=80&w=900",
+        itinerary: [
+            {
+                destination: "Nagarkot",
+                activity: "Travel, hotel check-in, sunset view",
+                food: "Coffee, snacks, dinner set"
+            },
+            {
+                destination: "Nagarkot View Tower",
+                activity: "Sunrise view, walk, relaxation",
+                food: "Breakfast set, momo, tea"
+            },
+            {
+                destination: "Bhaktapur",
+                activity: "Heritage visit, café stop and local sightseeing",
+                food: "Juju dhau, chatamari, lunch set"
+            },
+            {
+                destination: "Return Home",
+                activity: "Return journey and trip completion",
+                food: "Breakfast, tea, snacks"
+            }
+        ]
+    },
 
-      if (!numbers) {
-        return 0;
-      }
-
-      return Math.max(...numbers.map(Number));
+    default: {
+        name: "Pokhara Lakeside Trip",
+        transport: 500,
+        foodPerDay: 850,
+        stayPerDay: 1200,
+        img: "https://images.unsplash.com/photo-1623492701902-47dc207df5dc?q=80&w=900",
+        itinerary: [
+            {
+                destination: "Pokhara Lakeside",
+                activity: "Travel to Pokhara, lakeside walk, boating",
+                food: "Dal Bhat, juice, dinner"
+            },
+            {
+                destination: "Sarangkot",
+                activity: "Sunrise trip, viewpoint visit and relaxation",
+                food: "Breakfast set, tea, lunch"
+            },
+            {
+                destination: "Davis Falls",
+                activity: "Sightseeing and local shopping",
+                food: "Snacks, lunch set, tea"
+            },
+            {
+                destination: "Return Home",
+                activity: "Travel back home and trip completion",
+                food: "Breakfast, lunch, tea"
+            }
+        ]
     }
+};
 
-    function detectCategory(text) {
-      const lowerText = text.toLowerCase();
+function getBudgetFromText(text) {
+    const match = text.match(/(\d[\d,]*)/);
+    return match ? parseInt(match[1].replace(/,/g, ""), 10) : null;
+}
 
-      if (lowerText.includes("rural") || lowerText.includes("village") || lowerText.includes("local")) {
-        return "rural";
-      }
+function getCategory(text) {
+    text = text.toLowerCase();
 
-      if (lowerText.includes("himalayan") || lowerText.includes("mountain") || lowerText.includes("trek") || lowerText.includes("everest")) {
+    if (
+        text.includes("mountain") ||
+        text.includes("himalaya") ||
+        text.includes("himalayan") ||
+        text.includes("sagarmatha") ||
+        text.includes("everest") ||
+        text.includes("base camp")
+    ) {
         return "himalayan";
-      }
+    }
 
-      if (lowerText.includes("dating") || lowerText.includes("couple") || lowerText.includes("girlfriend") || lowerText.includes("boyfriend")) {
+    if (
+        text.includes("rural") ||
+        text.includes("village") ||
+        text.includes("local")
+    ) {
+        return "rural";
+    }
+
+    if (
+        text.includes("dating") ||
+        text.includes("couple") ||
+        text.includes("romantic")
+    ) {
         return "dating";
-      }
-
-      return "default";
     }
 
-    function hasDrinkRequest(text) {
-      const lowerText = text.toLowerCase();
-      return lowerText.includes("drink") || lowerText.includes("tea") || lowerText.includes("coffee") || lowerText.includes("juice");
-    }
+    return "default";
+}
 
-    function extractPeople(text) {
-      const lowerText = text.toLowerCase();
-      const peopleMatch = lowerText.match(/([0-9]+)[ ]*(people|person|persons|jana|member|members)/i);
+function getDrinkCost(text, totalDays) {
+    const hasDrink =
+        text.includes("drink") ||
+        text.includes("juice") ||
+        text.includes("tea") ||
+        text.includes("coffee") ||
+        text.includes("cold drink");
 
-      if (peopleMatch) {
-        return Math.max(1, Number(peopleMatch[1]));
-      }
+    if (!hasDrink) return 0;
 
-      return 1;
-    }
+    return 300 * totalDays;
+}
 
-    function extractDays(text, defaultDays) {
-      const lowerText = text.toLowerCase();
-      const dayMatch = lowerText.match(/([0-9]+)[ ]*(day|days|din)/i);
+function buildItinerary(place) {
+    let html = "";
 
-      if (dayMatch) {
-        return Math.max(1, Number(dayMatch[1]));
-      }
+    place.itinerary.forEach((item, index) => {
+        html += `
+            <div class="day-card">
+                <h4>Day ${index + 1}</h4>
+                <p><strong>Destination:</strong> ${item.destination}</p>
+                <p><strong>Activity:</strong> ${item.activity}</p>
+                <p><strong>Food:</strong> ${item.food}</p>
+            </div>
+        `;
+    });
 
-      return defaultDays;
-    }
+    return html;
+}
 
-    function calculateTotal(pkg, includeDrink, people, days) {
-      const transportCost = Number(pkg.transport) * people;
-      const foodCost = Number(pkg.foodPerDay) * days * people;
-      const stayCost = Number(pkg.stayPerDay) * days * people;
-      const drinkCost = includeDrink ? 300 * people : 0;
+function showPopup(title, message) {
+    document.getElementById("popupTitle").innerText = title;
+    document.getElementById("popupMessage").innerText = message;
+    document.getElementById("popupOverlay").style.display = "flex";
+}
 
-      return transportCost + foodCost + stayCost + drinkCost;
-    }
+function closePopup() {
+    document.getElementById("popupOverlay").style.display = "none";
+}
 
-    function generatePlan() {
-      const prompt = document.getElementById("userPrompt").value.trim();
-      const resultsBox = document.getElementById("tripResults");
-      resultsBox.innerHTML = "";
+function bookEvent(eventName) {
+    showPopup("Booking Successful", eventName + " booked successfully.");
+}
 
-      if (!prompt) {
-        showPopup("Missing Input", "Please enter your budget and trip idea first.");
-        return;
-      }
-
-      const budget = Number(extractBudget(prompt));
-      const category = detectCategory(prompt);
-      const includeDrink = hasDrinkRequest(prompt);
-      const people = extractPeople(prompt);
-
-      if (budget <= 0) {
-        showPopup("Budget Missing", "Please include your budget amount, for example: I have 7000 for rural trip.");
-        return;
-      }
-
-      if (budget < 6000) {
-        const minimumForPeople = 7000 * people;
+function bookTrip(placeName, fullTripCost, budget) {
+    if (budget < fullTripCost) {
         showPopup(
-          "Minimum Budget Required",
-          `Minimum rural package is NPR 7000 per person. For ${people} people, minimum budget is NPR ${minimumForPeople}.`
+            "Booking Failed",
+            "Your budget is less. You cannot book this trip."
         );
         return;
-      }
-
-      const matchedPackages = packages.filter(pkg => {
-        if (category === "default") {
-          return pkg.category === "default";
-        }
-
-        return pkg.category === category;
-      });
-
-      let visibleCount = 0;
-
-      matchedPackages.forEach(pkg => {
-        const days = extractDays(prompt, pkg.days);
-        const baseTotal = Number(calculateTotal(pkg, includeDrink, people, days));
-        const minimumBudget = baseTotal;
-
-        if (budget < minimumBudget) {
-          visibleCount++;
-
-          const card = document.createElement("div");
-          card.className = "card";
-
-          card.innerHTML = `
-            <span class="tag">${pkg.category.toUpperCase()}</span>
-            <h3>${pkg.title}</h3>
-            <p><strong>Destination:</strong> ${pkg.destination}</p>
-            <p>${pkg.description}</p>
-            <p><strong>People:</strong> ${people}</p>
-            <p><strong>Days:</strong> ${days}</p>
-            <p class="warning">Minimum budget for this ${pkg.category} trip is NPR ${minimumBudget}.</p>
-            <p class="warning">Your budget is NPR ${budget}. Please add NPR ${minimumBudget - budget} more.</p>
-          `;
-
-          resultsBox.appendChild(card);
-          return;
-        }
-
-        visibleCount++;
-
-        const extraBudget = budget - baseTotal;
-        const finalTotal = budget;
-        const itineraryHtml = pkg.itinerary.map(item => `<p>• ${item}</p>`).join("");
-
-        const extraBudgetHtml = extraBudget > 0
-          ? `<p><strong>Extra Budget Utilization:</strong> NPR ${extraBudget} will be used for better stay, local guide, cultural food, extra activities, or comfort upgrade.</p>`
-          : "";
-
-        const budgetMessage = `<p class="success">Your full budget NPR ${budget} will be utilized in this package.</p>`;
-
-        const card = document.createElement("div");
-        card.className = "card";
-
-        card.innerHTML = `
-          <span class="tag">${pkg.category.toUpperCase()}</span>
-          <h3>${pkg.title}</h3>
-          <p><strong>Destination:</strong> ${pkg.destination}</p>
-          <p>${pkg.description}</p>
-          <p><strong>People:</strong> ${people}</p>
-          <p><strong>Days:</strong> ${days}</p>
-          <p><strong>Transport:</strong> NPR ${Number(pkg.transport) * people}</p>
-          <p><strong>Food:</strong> NPR ${Number(pkg.foodPerDay) * people} per day for ${people} people</p>
-          <p><strong>Stay:</strong> NPR ${Number(pkg.stayPerDay) * people} per day for ${people} people</p>
-          ${includeDrink ? `<p><strong>Drink/Refreshment:</strong> 500 ml per person, NPR ${300 * people} total for ${people} people</p>` : ""}
-          <p><strong>Base Cost:</strong> NPR ${baseTotal}</p>
-          ${extraBudgetHtml}
-          <div class="price">Total Budget Used: NPR ${finalTotal}</div>
-          <h4>Itinerary</h4>
-          ${itineraryHtml}
-          ${budgetMessage}
-          <button onclick="bookPackage('${pkg.title}', ${budget}, ${finalTotal})">Book Package</button>
-        `;
-
-        resultsBox.appendChild(card);
-      });
-
-      if (visibleCount === 0) {
-        resultsBox.innerHTML = `
-          <div class="card">
-            <h3>No suitable package found</h3>
-            <p>Please try another trip type or enter a valid budget.</p>
-          </div>
-        `;
-      }
     }
 
-    function bookPackage(title, budget, total) {
-      budget = Number(budget);
-      total = Number(total);
+    showPopup(
+        "Booking Successful",
+        placeName + " booked successfully."
+    );
+}
 
-      if (budget >= total) {
-        showPopup("Booking Successful", `Your booking request for ${title} has been received.`);
-      } else {
-        showPopup("Booking Blocked", `Your budget is not enough for ${title}. Required: NPR ${total}, Your budget: NPR ${budget}.`);
-      }
-    }
+function runPlanner() {
+    const input = document.getElementById("userInput").value.trim().toLowerCase();
+    const results = document.getElementById("results");
 
-    function postEvent() {
-      const title = document.getElementById("eventTitle").value.trim();
-      const culture = document.getElementById("eventCulture").value.trim();
-      const price = Number(document.getElementById("eventPrice").value);
-      const capacity = Number(document.getElementById("eventCapacity").value);
-      const date = document.getElementById("eventDate").value;
-      const description = document.getElementById("eventDescription").value.trim();
-
-      if (!title || !culture || !price || !capacity || !date || !description) {
-        showPopup("Incomplete Event", "Please fill all event details before posting.");
+    if (!input) {
+        results.classList.remove("hidden");
+        results.innerHTML = `
+            <div class="error-box">
+                Please type something like:
+                <br><strong>I have 7000 for rural trip with drink</strong>
+            </div>
+        `;
+        document.getElementById("home-feed").classList.add("hidden");
+        document.getElementById("backBtn").classList.remove("hidden");
         return;
-      }
-
-      events.unshift({ title, culture, price, capacity, date, description });
-      renderEvents();
-
-      document.getElementById("eventTitle").value = "";
-      document.getElementById("eventCulture").value = "";
-      document.getElementById("eventPrice").value = "";
-      document.getElementById("eventCapacity").value = "";
-      document.getElementById("eventDate").value = "";
-      document.getElementById("eventDescription").value = "";
-
-      showPopup("Event Posted", "Your cultural event has been posted successfully.");
     }
 
-    function renderEvents() {
-      const eventList = document.getElementById("eventList");
-      eventList.innerHTML = "";
+    const budget = getBudgetFromText(input);
 
-      events.forEach(event => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <span class="tag">${event.culture}</span>
-          <h3>${event.title}</h3>
-          <p>${event.description}</p>
-          <p><strong>Date:</strong> ${event.date}</p>
-          <p><strong>Capacity:</strong> ${event.capacity} people</p>
-          <div class="price">NPR ${event.price} per person</div>
-          <button class="secondary-btn" onclick="showPopup('Event Booking', 'Your request for ${event.title} has been received.')">Book Event</button>
+    if (!budget) {
+        results.classList.remove("hidden");
+        results.innerHTML = `
+            <div class="error-box">
+                Please include your budget in the sentence.
+                <br>Example: <strong>I have 120000 for sagarmatha base camp with tea</strong>
+            </div>
         `;
-        eventList.appendChild(card);
-      });
+        document.getElementById("home-feed").classList.add("hidden");
+        document.getElementById("backBtn").classList.remove("hidden");
+        return;
     }
 
-    function showPopup(title, message) {
-      document.getElementById("popupTitle").textContent = title;
-      document.getElementById("popupMessage").textContent = message;
-      document.getElementById("popupBg").style.display = "flex";
+    const category = getCategory(input);
+    const place = destinations[category];
+
+    const totalDays = place.itinerary.length;
+    const totalFood = place.foodPerDay * totalDays;
+    const totalStay = place.stayPerDay * totalDays;
+    const drinkCost = getDrinkCost(input, totalDays);
+    const fullTripCost = place.transport + totalFood + totalStay + drinkCost;
+    const shortfall = fullTripCost - budget;
+    const remaining = budget - fullTripCost;
+
+    // If budget is more than 1000 less than required, do not show place/package
+    if (shortfall > 1000) {
+        results.innerHTML = `
+            <div class="error-box">
+                Your budget is too low for this package, so this place is not shown.
+                <br><strong>Your budget:</strong> NPR ${budget}
+                <br><strong>Required budget:</strong> NPR ${fullTripCost}
+                <br><strong>Need more:</strong> NPR ${shortfall}
+            </div>
+        `;
+
+        document.getElementById("home-feed").classList.add("hidden");
+        results.classList.remove("hidden");
+        document.getElementById("backBtn").classList.remove("hidden");
+        return;
     }
 
-    function closePopup() {
-      document.getElementById("popupBg").style.display = "none";
+    // If budget is short by 1000 or less, show the place but do not allow booking
+    if (shortfall > 0 && shortfall <= 1000) {
+        results.innerHTML = `
+            <div class="card">
+                <img src="${place.img}" alt="${place.name}">
+                <div class="card-content">
+                    <h2>${place.name}</h2>
+
+                    <div class="notice">
+                        This package is close to your budget, so it is shown.
+                        But your budget is still less, so you cannot book it.
+                    </div>
+
+                    <div class="price-box">
+                        <strong>Trip Budget Breakdown</strong><br>
+                        🚌 Transport: NPR ${place.transport}<br>
+                        🍛 Food (${totalDays} days): NPR ${totalFood}<br>
+                        🏠 Stay (${totalDays} days): NPR ${totalStay}<br>
+                        ${drinkCost > 0 ? `🥤 Drink/Refreshment (${totalDays} days): NPR ${drinkCost}<br>` : ""}
+                        <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
+                        <strong>Total Cost: NPR ${fullTripCost}</strong><br>
+                        <strong>Your Budget: NPR ${budget}</strong><br>
+                        <strong>Need More: NPR ${shortfall}</strong>
+                    </div>
+
+                    <h3 style="margin-top:20px; color: var(--nepal-red);">Day Wise Plan</h3>
+                    <p class="small-text">This itinerary includes all days until return home.</p>
+
+                    ${buildItinerary(place)}
+
+                    <button class="btn-go" style="width:100%; margin-top:18px;" onclick="bookTrip('${place.name}', ${fullTripCost}, ${budget})">
+                        Book This Trip
+                    </button>
+                </div>
+            </div>
+        `;
+
+        document.getElementById("home-feed").classList.add("hidden");
+        results.classList.remove("hidden");
+        document.getElementById("backBtn").classList.remove("hidden");
+        return;
     }
 
-    renderEvents();
-  </script>
+    // If budget is enough, show package and allow booking
+    results.innerHTML = `
+        <div class="card">
+            <img src="${place.img}" alt="${place.name}">
+            <div class="card-content">
+                <h2>${place.name}</h2>
+                <p>
+                    Based on your budget of <strong>NPR ${budget}</strong>,
+                    you can complete the full <strong>${totalDays}-day trip</strong> and return home.
+                </p>
+
+                <div class="notice">
+                    Your budget is enough for the complete round trip, including the final return-home day.
+                </div>
+
+                <div class="price-box">
+                    <strong>💰 Full Trip Budget Breakdown</strong><br>
+                    🚌 Transport: NPR ${place.transport}<br>
+                    🍛 Food (${totalDays} days): NPR ${totalFood}<br>
+                    🏠 Stay (${totalDays} days): NPR ${totalStay}<br>
+                    ${drinkCost > 0 ? `🥤 Drink/Refreshment (${totalDays} days): NPR ${drinkCost}<br>` : ""}
+                    <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
+                    <strong>Total Cost: NPR ${fullTripCost}</strong><br>
+                    <strong>Remaining Budget: NPR ${remaining}</strong>
+                </div>
+
+                <h3 style="margin-top:20px; color: var(--nepal-red);">Day Wise Plan</h3>
+                <p class="small-text">This itinerary includes all days until return home.</p>
+
+                ${buildItinerary(place)}
+
+                <button class="btn-go" style="width:100%; margin-top:18px;" onclick="bookTrip('${place.name}', ${fullTripCost}, ${budget})">
+                    Book This Trip
+                </button>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("home-feed").classList.add("hidden");
+    results.classList.remove("hidden");
+    document.getElementById("backBtn").classList.remove("hidden");
+}
+
+function resetHome(event) {
+    event.preventDefault();
+    document.getElementById("home-feed").classList.remove("hidden");
+    document.getElementById("results").classList.add("hidden");
+    document.getElementById("backBtn").classList.add("hidden");
+    document.getElementById("userInput").value = "";
+}
+
+document.getElementById("userInput").addEventListener("keypress", function(e){
+    if (e.key === "Enter") {
+        runPlanner();
+    }
+});
+
+document.getElementById("popupOverlay").addEventListener("click", function(e){
+    if (e.target.id === "popupOverlay") {
+        closePopup();
+    }
+});
+</script>
+
 </body>
 </html>
